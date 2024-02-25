@@ -12,13 +12,14 @@
         </li>
         <li class="nav-item">
           <router-link v-if="store.token == ''" class="nav-link" to="/login">Login</router-link>
-          <router-link v-else class="nav-link" to="/logout">Logout</router-link>
+          <a v-else href="javascript:void(0);" class="nav-link" @click="logout">Logout</a>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+
+      <span class="navbar-text">
+        {{ store.user.first_name ?? '' }}
+      </span>
+
     </div>
   </div>
 </nav>
@@ -31,6 +32,35 @@ export default {
   data() {
     return {
       store
+    }
+  },
+
+  methods: {
+    logout() {
+      const payload = {
+        token: store.token
+      }
+
+      const requestOptions = {
+        method: "POST",
+        body: JSON.stringify(payload)
+      }
+
+      fetch("http://localhost:8081/users/logout", requestOptions)
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.error) {
+          console.log(response.message)
+        } else {
+          store.token = ""
+          store.user = {}
+          document.cookie = '_site_data=; Path=/; '+
+          'SameSite=Strict; Secure' +
+          'Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+
+          this.$router.push("/login")
+        }
+      })
     }
   }
 }
