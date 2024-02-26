@@ -5,8 +5,8 @@ import BooksComponent from '../components/books/BooksComponent.vue'
 import BookComponent from '../components/books/BookComponent.vue'
 import BooksAdmin from '../components/books/BooksAdmin.vue'
 import BookEdit from '../components/books/BookEdit.vue'
-import UsersComponent from '../components/books/UsersComponent.vue'
-import UserEdit from '../components/books/UserEdit.vue'
+import UsersComponent from '../components/users/UsersComponent.vue'
+import UserEdit from '../components/users/UserEdit.vue'
 
 const routes = [
     {

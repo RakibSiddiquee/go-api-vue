@@ -8,8 +8,33 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <router-link class="nav-link active" aria-current="page" to="/">Home</router-link>
+          <router-link class="nav-link active" aria-current="page" :to="{name: 'home'}">Home</router-link>
         </li>
+
+        <li class="nav-item">
+          <router-link class="nav-link active" aria-current="page" :to="{name: 'books'}">Books</router-link>
+        </li>
+
+        <li v-if="store.token !== ''" class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" id="navBarDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Admin
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navBarDropDown">
+            <li>
+              <router-link class="dropdown-item" :to="{name: 'users'}">Manage Users</router-link>
+            </li>
+            <li>
+              <router-link class="dropdown-item" to="/admin/users/0">Add User</router-link>
+            </li>
+            <li>
+              <router-link class="dropdown-item" :to="{name: 'booksAdmin'}">Manage Books</router-link>
+            </li>
+            <li>
+              <router-link class="dropdown-item" :to="{name: 'bookEdit', params: {bookId: 0}}">Add a Book</router-link>
+            </li>
+          </ul>
+        </li>
+
         <li class="nav-item">
           <router-link v-if="store.token == ''" class="nav-link" to="/login">Login</router-link>
           <a v-else href="javascript:void(0);" class="nav-link" @click="logout">Logout</a>
