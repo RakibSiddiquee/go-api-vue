@@ -32,7 +32,8 @@
     import TextInput from './forms/TextInput.vue';
     import FormTag from './forms/FormTag.vue';
     import { store } from './store';
-    import notie from 'notie'
+    import notie from 'notie';
+    import Security from './security';
 
     export default {
         name: "LoginComponent",
@@ -51,22 +52,15 @@
 
         methods: {
             submitHandler() {
-                console.log('submit')
                 const payload = {
                     email: this.email,
                     password: this.password
                 }
 
-                const requestOptions = {
-                    method: "POST",
-                    body: JSON.stringify(payload)
-                }
-
-                fetch(process.env.VUE_APP_API_URL + "/users/login", requestOptions)
+                fetch(process.env.VUE_APP_API_URL + "/users/login", Security.requestOptions(payload))
                 .then((response) => response.json())
                 .then((response) => {
                     if (response.error) {
-                        console.log("Error:", response.message);
                         notie.alert({
                             type: 'error',
                             text: response.message,
@@ -74,7 +68,7 @@
                             // position: 'bottom',
                         })
                     } else {
-                        console.log("Token", response.data.token.token);
+                        
                         store.token = response.data.token.token;
 
                         store.user = {
