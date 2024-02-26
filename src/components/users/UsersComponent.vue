@@ -7,3 +7,13 @@
         </div>
     </div>
 </template>
+
+<script>
+import Security from '../modules/security';
+
+export default {
+    beforeMount(){
+        Security.requireToken();
+    }
+}
+</script>

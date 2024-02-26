@@ -52,7 +52,7 @@
 
 <script>
 import { store } from './store';
-import Security from './security';
+import Security from './modules/security';
 
 export default {
   data() {

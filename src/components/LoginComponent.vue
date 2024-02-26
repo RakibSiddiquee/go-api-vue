@@ -33,7 +33,7 @@
     import FormTag from './forms/FormTag.vue';
     import { store } from './store';
     import notie from 'notie';
-    import Security from './security';
+    import Security from './modules/security';
 
     export default {
         name: "LoginComponent",
@@ -68,7 +68,7 @@
                             // position: 'bottom',
                         })
                     } else {
-                        
+
                         store.token = response.data.token.token;
 
                         store.user = {
