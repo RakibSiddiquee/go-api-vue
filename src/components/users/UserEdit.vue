@@ -4,7 +4,7 @@
             <div class="col">
                 <h1 class="mt-3">User Edit</h1>
                 <hr>
-                <form-tag @setEditEvent="submitHandler" name="userform" event="userEditEvent">
+                <form-tag @userEditEvent="submitHandler" name="userform" event="userEditEvent">
                     <text-input 
                         v-model="user.first_name"
                         type="text"
@@ -35,7 +35,7 @@
                     <text-input 
                         v-model="user.password"
                         type="password"
-                        :required="user.id === 0"
+                        :required="user.id === 0 ? 'true' : 'false'"
                         label="Password"
                         :value="user.password"
                         name="password">
@@ -81,7 +81,20 @@ export default {
 
         if (parseInt(String(this.$route.params.userId), 10) > 0) {
             // Edit the user
-            // TODO: get user from database
+            fetch(process.env.VUE_APP_API_URL + "/admin/users/get"+this.$route.params.userId, Security.requestOptions(""))
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    notie.alert({
+                        type: 'error',
+                        text: data.message,
+                    })
+                } else {
+                    this.user = data;
+                    // we want password to be empty for existing users
+                    this.user.password = '';
+                }
+            })
         }
     },
 
