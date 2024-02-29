@@ -46,6 +46,7 @@
                         v-model="user.password"
                         type="password"
                         label="Password"
+                        help="Leave empty to keep existing password"
                         :value="user.password"
                         name="password">
                     </text-input>
