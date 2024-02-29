@@ -33,9 +33,18 @@
                     </text-input>
 
                     <text-input 
+                        v-if="user.id === 0"
                         v-model="user.password"
                         type="password"
-                        :required="user.id === 0 ? 'true' : 'false'"
+                        required="true"
+                        label="Password"
+                        :value="user.password"
+                        name="password">
+                    </text-input>
+                    <text-input 
+                        v-else
+                        v-model="user.password"
+                        type="password"
                         label="Password"
                         :value="user.password"
                         name="password">
@@ -81,7 +90,7 @@ export default {
 
         if (parseInt(String(this.$route.params.userId), 10) > 0) {
             // Edit the user
-            fetch(process.env.VUE_APP_API_URL + "/admin/users/get"+this.$route.params.userId, Security.requestOptions(""))
+            fetch(process.env.VUE_APP_API_URL + "/admin/users/get/"+this.$route.params.userId, Security.requestOptions(""))
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
