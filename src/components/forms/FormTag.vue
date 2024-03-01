@@ -21,8 +21,8 @@ export default {
             let myForm = this.$refs[this.$props.name];
 
             if (myForm.checkValidity()) {
-                console.log('my event name', this.$props['event']);
-                console.log("name", this.$props.name)
+                // console.log('my event name', this.$props['event']);
+                // console.log("name", this.$props.name)
                 this.$emit(this.$props['event']);
             }
 
