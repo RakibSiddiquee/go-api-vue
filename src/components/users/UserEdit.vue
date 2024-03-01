@@ -159,7 +159,6 @@ export default {
                 text: "Are you sure you want to delete this user?",
                 submitText: "Delete",
                 submitCallback: function(){
-                    console.log("will delete", id);
 
                     let payload = {
                         id: id,
