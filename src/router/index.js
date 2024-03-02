@@ -7,6 +7,7 @@ import BooksAdmin from '../components/books/BooksAdmin.vue'
 import BookEdit from '../components/books/BookEdit.vue'
 import UsersComponent from '../components/users/UsersComponent.vue'
 import UserEdit from '../components/users/UserEdit.vue'
+import Security from "@/components/modules/security"
 
 const routes = [
     {
@@ -59,4 +60,8 @@ const routes = [
 ]
 
 const router = createRouter({ history: createWebHistory(), routes })
+router.beforeEach(() => {
+    Security.checkToken();
+})
+
 export default router
