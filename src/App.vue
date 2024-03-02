@@ -1,7 +1,12 @@
 <template>
   <HeaderComponent />
   <div>
-    <router-view @error="error" @success="success" @warning="warning" />
+    <router-view 
+      :key="componentKey" 
+      @error="error" 
+      @success="success" 
+      @warning="warning" 
+      @forceUpdate="forceUpdate" />
   </div>
   <FooterComponent />
 </template>
@@ -28,6 +33,7 @@ export default {
 
   data(){
     return {
+      componentKey: 0,
       store
     }
   },
@@ -51,6 +57,10 @@ export default {
   },
 
   methods: {
+    forceUpdate(){
+      this.componentKey++;
+    },
+
     success(msg) {
       notie.alert({
         type: 'success',
