@@ -47,6 +47,7 @@ let Security = {
                 } else {
                     if (!response.data) {
                         store.token = "";
+                        store.user = {};
                         document.cookie = '_site_data=; Path=; '
                             + 'SameSite=strict; Secure; '
                             + 'Expires=Thu 01 Jan 1970 00:00:01 GMT;'
