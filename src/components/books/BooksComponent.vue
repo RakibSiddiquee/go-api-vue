@@ -7,7 +7,7 @@
 
             <hr>
 
-            <div class="filters text-center mb-2">
+            <div class="filters text-center">
                 <span class="filter me-1" :class="{ active: currentFilter === 0 }" @click="setFilter(0)">ALL</span>
                 <span class="filter me-1" :class="{ active: currentFilter === 7 }" @click="setFilter(7)">CLASSIC</span>
                 <span class="filter me-1" :class="{ active: currentFilter === 2 }" @click="setFilter(2)">FANTASY</span>
@@ -20,7 +20,8 @@
 
             <div>
                 <div class="card-group">
-                    <div class="p-3 d-flex flex-wrap">
+                    <transition-group class="p-3 d-flex flex-wrap" tag="div" appear name="books">
+
                         <div v-for="book in books" :key="book.id">
                             <div 
                                 class="card me-2 ms-1 mb-3"
@@ -50,7 +51,7 @@
 
                             </div>
                         </div>
-                    </div>
+                    </transition-group>
                 </div>
             </div>
         </div>
@@ -94,6 +95,9 @@ export default {
 </script>
 
 <style scoped>
+.filters {
+    height: 2.5em;
+}
 .filter {
     padding: 6px 6px;
     cursor: pointer;
@@ -104,10 +108,27 @@ export default {
 .filter.active {
     background: lightgreen;
 }
-.filter.hover {
-    background: rgb(238, 39, 39);
+.filter:hover {
+    background: lightgray;
 }
 .book-author, .book-genre {
     font-size: 0.8em;
+}
+
+/* Transition styles */
+.books-move {
+    transition: all 500ms ease-in-out 50ms;
+}
+
+.books-enter-active {
+    transition: all 500ms ease-in-out;
+}
+
+.books-leave-active {
+    transition: all 500ms ease-in;
+}
+
+.books-enter, .books-leave-to {
+    opacity: 0;
 }
 </style>
