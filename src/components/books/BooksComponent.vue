@@ -7,6 +7,17 @@
 
             <hr>
 
+            <div class="filters text-center mb-2">
+                <span class="filter me-1" :class="{ active: currentFilter === 0 }" @click="setFilter(0)">ALL</span>
+                <span class="filter me-1" :class="{ active: currentFilter === 7 }" @click="setFilter(7)">CLASSIC</span>
+                <span class="filter me-1" :class="{ active: currentFilter === 2 }" @click="setFilter(2)">FANTASY</span>
+                <span class="filter me-1" :class="{ active: currentFilter === 6 }" @click="setFilter(6)">HORROR</span>
+                <span class="filter me-1" :class="{ active: currentFilter === 4 }" @click="setFilter(4)">THRILLER</span>
+                <span class="filter me-1" :class="{ active: currentFilter === 1 }" @click="setFilter(1)">SCIENCE FICTION</span>
+            </div>
+
+            <hr>
+
             <div>
                 <div class="card-group">
                     <div class="p-3 d-flex flex-wrap">
@@ -25,7 +36,16 @@
                                         <h6 class="card-title">
                                             {{ book.title }}{{ book.genre_ids }}
                                         </h6>
-                                        {{ book.author.author_name }}
+                                        <span class="book-author">{{ book.author.author_name }}</span><br>
+                                        <small class="text-muted book-genre"
+                                            v-for="(g, index) in book.genres" :key="g.id">
+                                            <em class="me-1">
+                                                {{ g.genre_name }}
+                                                <template v-if="index !== book.genres.length-1">,</template>
+                                            </em>
+
+                                        </small>
+                                        
                                     </div>
 
                             </div>
@@ -66,7 +86,28 @@ export default {
         })
     },
     methods: {
-
+        setFilter(filter) {
+            this.currentFilter = filter;
+        }
     }
 }
 </script>
+
+<style scoped>
+.filter {
+    padding: 6px 6px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.35s;
+    border: 1px solid silver;
+}
+.filter.active {
+    background: lightgreen;
+}
+.filter.hover {
+    background: rgb(238, 39, 39);
+}
+.book-author, .book-genre {
+    font-size: 0.8em;
+}
+</style>
