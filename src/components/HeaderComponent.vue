@@ -30,7 +30,7 @@
               <router-link class="dropdown-item" :to="{name: 'booksAdmin'}">Manage Books</router-link>
             </li>
             <li>
-              <router-link class="dropdown-item" :to="{name: 'bookEdit', params: {bookId: 0}}">Add a Book</router-link>
+              <router-link class="dropdown-item" :to="{name: 'bookEdit', params: {id: 0}}">Add a Book</router-link>
             </li>
           </ul>
         </li>

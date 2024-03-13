@@ -43,7 +43,7 @@
             })
         },
         deactivated() {
-            
+            this.ready = false;
         }
     }
 </script>
