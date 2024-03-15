@@ -63,6 +63,7 @@
 <script>
 import { store } from '../store'
 export default {
+    name: 'BooksComponent',
     data () {
         return {
             store,

@@ -30,7 +30,7 @@
                 ready: false
             }
         },
-        activated() {
+        mounted() {
             fetch(process.env.VUE_APP_API_URL + "/books/" + this.$route.params.slug)
             .then(response => response.json())
             .then(data => {
@@ -42,8 +42,5 @@
                 }
             })
         },
-        deactivated() {
-            this.ready = false;
-        }
     }
 </script>

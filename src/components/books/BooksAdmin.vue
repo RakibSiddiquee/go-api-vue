@@ -32,6 +32,7 @@
 import Security from '../modules/security';
 
 export default {
+    name: 'BooksAdmin',
     data(){
         return {
             books: {},
@@ -39,7 +40,7 @@ export default {
         }
     },
 
-    activated() {
+    mounted() {
         Security.requireToken();
 
         fetch(process.env.VUE_APP_API_URL+"/books")
@@ -52,10 +53,6 @@ export default {
                 this.ready = true;
             }
         })
-    },
-
-    deactivated() {
-        this.ready = false;
     }
 }
 </script>
