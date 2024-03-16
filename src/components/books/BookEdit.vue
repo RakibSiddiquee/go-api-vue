@@ -67,6 +67,40 @@
                         <label for="description" class="form-label">Description</label>
                         <textarea v-model="book.description" id="description" rows="4" class="form-control" required></textarea>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="genres" class="form-label">Genres</label>
+                        <select 
+                            ref="genres" 
+                            id="genres" 
+                            class="form-select"
+                            required 
+                            size="7" 
+                            v-model="book.genre_ids" 
+                            multiple
+                        >
+                            <option 
+                                v-for="genre in genres" 
+                                :value="genre.value" 
+                                :key="genre.value"
+                            >
+                                {{ genre.text }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <hr>
+
+                    <div class="float-start">
+                        <input type="submit" class="btn btn-primary me-2" value="Save">
+                        <router-link :to="{name: 'booksAdmin'}" class="btn btn-outline-secondary">Cancel</router-link>
+                    </div>
+                    <div class="float-end">
+                        <a v-if="book.id > 0" class="btn btn-danger" 
+                            href="javascript:void(0);" @click="confirmDelete(book.id)">
+                            Delete                            
+                        </a>
+                    </div>
                 </form-tag>
             </div>
         </div>
@@ -78,6 +112,7 @@ import FormTag from '@/components/forms/FormTag.vue';
 import SelectInput from '@/components/forms/SelectInput.vue';
 import TextInput from '@/components/forms/TextInput.vue';
 import Security from '@/components/modules/security';
+import notie from 'notie';
 
 export default {
   components: { FormTag, TextInput, SelectInput },
@@ -114,12 +149,70 @@ export default {
 
     methods: {
         loadCoverImage() {
+            // get a reference to the input using ref
+            const file = this.$refs.coverInput.files[0];
 
+            // encode the file using the FileReader API
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result
+                    .replace("data:", "")
+                    .replace(/^.+,/, "");
+                this.book.cover = base64String;
+                // alert(base64String)
+            }
+            reader.readAsDataURL(file);
         },
 
         submitHandler() {
+            const payload = {
+                id: this.book.id,
+                title: this.book.title,
+                author_id: parseInt(this.book.author_id, 10),
+                publication_year: this.book.publication_year,
+                description: this.book.description,
+                cover: this.book.cover,
+                slug: this.book.slug,
+                genre_ids: this.book.genre_ids
+            }
 
+            fetch(`${process.env.VUE_APP_API_URL}/admin/books/save`, Security.requestOptions(payload))
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    this.$emit('error', data.message);
+                } else {
+                    this.$emit('success', 'Changes saved');
+                    this.$router.push({name: 'booksAdmin'});
+                }
+            })
+            .catch(error => {
+                this.$emit('error', error)
+            })
         },
+
+        confirmDelete(id) {
+            notie.confirm({
+                text: "Are you sure you want to delete this book?",
+                submitText: "Delete",
+                submitCallback: () => {
+                    let payload = {
+                        id: id,
+                    }
+
+                    fetch (process.env.VUE_APP_API_URL+"/admin/books/delete", Security.requestOptions(payload))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            this.$emit('error', data.message);
+                        } else {
+                            this.$emit('success', "Book deleted");
+                            this.$router.push({name: 'booksAdmin'});
+                        }
+                    })
+                }
+            })
+        }
     }
 }
 </script>
