@@ -9,7 +9,7 @@
                 <form-tag @bookEditEvent="submitHandler" name="bookForm" event="bookEditEvent">
                     <div v-if="book.slug != ''" class="mb-3">
                         <img 
-                            :src="`${book.imgPath}/covers/${book.slug}.jpg`" 
+                            :src="`${imgPath}/covers/${book.slug}.jpg`" 
                             class="img-fluid img-thumbnail book-cover" 
                             alt="Cover" 
                         />
@@ -121,8 +121,21 @@ export default {
         // get book for edit if id > 0
         if (this.$route.params.id > 0) {
             // Edit a book
-        } else {
-            // Add a book
+            fetch(process.env.VUE_APP_API_URL + "/admin/books/" + this.$route.params.id, Security.requestOptions(""))
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    this.$emit('error', data.message)
+                } else {
+                    this.book = data.data;
+                    this.book.publication_year = data.data.publication_year.toString()
+                    let genreArray = [];
+                    for(let i=0; i < this.book.genres.length; i++) {
+                        genreArray.push(this.book.genres[i].id);
+                    }
+                    this.book.genre_ids = genreArray;
+                }
+            })
         }
 
         // get list of authors for dropdown
@@ -233,3 +246,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.book-cover {
+    max-width: 10em;
+}
+</style>
