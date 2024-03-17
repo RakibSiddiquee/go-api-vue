@@ -77,8 +77,7 @@
                             required 
                             size="7" 
                             v-model="book.genre_ids" 
-                            multiple
-                        >
+                            multiple>
                             <option 
                                 v-for="genre in genres" 
                                 :value="genre.value" 
@@ -118,6 +117,24 @@ export default {
   components: { FormTag, TextInput, SelectInput },
     beforeMount(){
         Security.requireToken();
+
+        // get book for edit if id > 0
+        if (this.$route.params.id > 0) {
+            // Edit a book
+        } else {
+            // Add a book
+        }
+
+        // get list of authors for dropdown
+        fetch(process.env.VUE_APP_API_URL+"/admin/authors/all", Security.requestOptions(""))
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                this.$emit('error', data.message);
+            } else {
+                this.authors = data.data;
+            }
+        })
     },
 
     data(){
