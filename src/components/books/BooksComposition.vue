@@ -19,7 +19,7 @@
 
             <hr>
 
-            <div>
+            <div v-if="ready">
                 <div class="card-group">
                     <transition-group class="p-3 d-flex flex-wrap" tag="div" appear name="books">
 
@@ -57,6 +57,7 @@
                     </transition-group>
                 </div>
             </div>
+            <p v-else class="text-center">Loading...</p>
         </div>
     </div>
 </template>
